@@ -5,5 +5,7 @@ COPY package.json .
 RUN yarn
 COPY . .
 
+RUN yarn build
+
 EXPOSE 23456
-CMD ["node", "dist/index.js"]
+CMD ["yarn", "start"]
