@@ -2,10 +2,10 @@ provider "aws" {
   region = "ap-northeast-1"
 }
 
-module "ecr" {
-  source     = "./iac"
-  profile    = "suzukalight"
-  region     = "ap-northeast-1"
-  image_name = "study-ecr-terraform"
-  docker_dir = "."
+terraform {
+  backend "s3" {
+    bucket = "study-aws-ecr-ecs-terraform"
+    key    = "test/terraform.tfstate"
+    region = "ap-northeast-1"
+  }
 }
