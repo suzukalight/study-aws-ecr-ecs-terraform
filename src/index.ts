@@ -91,6 +91,10 @@ app.get('/', (req, res) => {
   res.send('ok')
 })
 
+app.get('/health_check', (req, res) => {
+  res.send('ok')
+})
+
 app.listen({ port: 23456 }, () => {
   console.log('server on http://localhost:23456/graphql');
 });
