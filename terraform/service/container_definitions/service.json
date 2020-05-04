@@ -1,0 +1,25 @@
+[
+  {
+    "name": "sample-webapp",
+    "image": "747695887408.dkr.ecr.ap-northeast-1.amazonaws.com/sample-image:latest",
+    "cpu": 256,
+    "memoryReservation": 512,
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": 0,
+        "protocol": "tcp",
+        "containerPort": 23456
+      }
+    ],
+    "command": ["bundle", "exec", "ruby", "app.rb", "-o", "0.0.0.0"],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "sample-service",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "service"
+      }
+    }
+  }
+]
