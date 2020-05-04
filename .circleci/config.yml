@@ -1,6 +1,8 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  aws-ecr: circleci/aws-ecr@0.0.2
+  aws-ecs: circleci/aws-ecs@0.0.3
 jobs:
   build-and-test:
     executor:
@@ -11,7 +13,28 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
+  build-and-deploy:
+    jobs:
+      - ...
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          aws-region: ${AWS_DEFAULT_REGION}
+          family: '${AWS_RESOURCE_NAME_PREFIX}-service'
+          cluster-name: '${AWS_RESOURCE_NAME_PREFIX}-cluster'
+          container-image-name-updates: 'container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}'
+
 workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - aws-ecr/build-and-push-image:
+        account-url: '${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com'
+        repo: '${AWS_RESOURCE_NAME_PREFIX}'
+        region: ${AWS_DEFAULT_REGION}
+        tag: '${CIRCLE_SHA1}'
+        requires:
+          - build-and-test
+        filters:
+          branches:
+            only: master
