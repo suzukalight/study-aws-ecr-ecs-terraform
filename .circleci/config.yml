@@ -21,8 +21,10 @@ workflows:
     jobs:
       - build-and-test
       - aws-ecr/build-and-push-image:
-          repo: "${AWS_RESOURCE_NAME_PREFIX}"
-          tag: "${CIRCLE_SHA1}"
+          repo: '${AWS_RESOURCE_NAME_PREFIX}'
+          tag: '${CIRCLE_SHA1}'
+          requires:
+            - build-and-test
           filters:
             branches:
               only: master
