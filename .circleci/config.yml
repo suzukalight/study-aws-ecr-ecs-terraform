@@ -1,8 +1,10 @@
 version: 2.1
+
 orbs:
   node: circleci/node@1.1.6
   aws-ecr: circleci/aws-ecr@6.8.2
   aws-ecs: circleci/aws-ecs@0.0.3
+
 jobs:
   build-and-test:
     executor:
@@ -15,16 +17,12 @@ jobs:
             - run: npm test
 
 workflows:
-  build-and-test:
-    jobs:
-      - build-and-test
   build_and_push_image:
     jobs:
+      - build-and-test
       - aws-ecr/build-and-push-image:
-        repo: "${AWS_RESOURCE_NAME_PREFIX}"
-        tag: "${CIRCLE_SHA1}"
-        requires:
-          - build-and-test
-        filters:
-          branches:
-            only: master
+          repo: "${AWS_RESOURCE_NAME_PREFIX}"
+          tag: "${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: master
