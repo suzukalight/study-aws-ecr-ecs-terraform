@@ -6,7 +6,7 @@ orbs:
   aws-ecs: circleci/aws-ecs@0.0.3
 
 jobs:
-  build-and-test:
+  test:
     executor:
       name: node/default
     steps:
@@ -15,16 +15,33 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
+  build:
+    docker:
+      - image: node:12-alpine
+    steps:
+      - checkout
+      - run:
+          name: Install aws-cli
+          command: |
+            apk add --no-cache --update py-pip
+            pip install awscli
+      - run:
+          name: Login ECR
+          command: |
+            aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AWS_ECR_ACCOUNT_URL}
+      - run:
+          name: Build Image
+          command: |
+            docker build -t ${AWS_ECR_ACCOUNT_URL}:$CIRCLE_SHA1 -t ${AWS_ECR_ACCOUNT_URL}:latest .
 
 workflows:
   build_and_push_image:
     jobs:
-      - build-and-test
+      - test
       - aws-ecr/build-and-push-image:
           repo: '${AWS_RESOURCE_NAME_PREFIX}'
-          tag: '${CIRCLE_SHA1}'
           requires:
-            - build-and-test
+            - test
           filters:
             branches:
               only: master
