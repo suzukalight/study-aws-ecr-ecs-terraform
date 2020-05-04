@@ -3,6 +3,7 @@ resource "aws_lb_target_group" "http" {
   port     = 23456
   protocol = "HTTP"
   vpc_id   = data.terraform_remote_state.vpc.outputs.vpc_id
+
   health_check {
     interval            = 30
     path                = "/health_check"
@@ -12,4 +13,6 @@ resource "aws_lb_target_group" "http" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
   }
+
+  depends_on = [aws_lb.lb]
 }
