@@ -88,7 +88,7 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: '/graphql' });
 
 app.get('/', (req, res) => {
-  res.send('ok')
+  res.send('Index page')
 })
 
 app.get('/health_check', (req, res) => {
