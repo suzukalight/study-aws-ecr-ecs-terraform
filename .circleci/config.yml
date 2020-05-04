@@ -15,9 +15,9 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
-  build:
+  deploy:
     docker:
-      - image: node:12-alpine
+      - image: circleci/python:3.7
     steps:
       - checkout
       - run:
@@ -30,9 +30,11 @@ jobs:
           command: |
             aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AWS_ECR_ACCOUNT_URL}
       - run:
-          name: Build Image
+          name: Deploy
           command: |
-            docker build -t ${AWS_ECR_ACCOUNT_URL}:$CIRCLE_SHA1 -t ${AWS_ECR_ACCOUNT_URL}:latest .
+            aws ecs describe-task-definition --task-definition webapp-service | jq '.taskDefinition | { containerDefinitions: .containerDefinitions }' > definition.json
+            aws ecs register-task-definition --family webapp-service --cli-input-json file://definition.json
+            aws ecs update-service --cluster sample-ecs-cluster --service webapp-service --task-definition webapp-service
 
 workflows:
   build_and_push_image:
@@ -45,3 +47,9 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy:
+          requires: 
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only: master        
