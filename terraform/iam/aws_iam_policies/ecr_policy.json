@@ -4,6 +4,8 @@
     {
       "Effect": "Allow",
       "Action": [
+        "iam:Get*",
+        "iam:List*",
         "iam:PassRole",
         "ecr:GetAuthorizationToken",
         "ecr:BatchCheckLayerAvailability",
