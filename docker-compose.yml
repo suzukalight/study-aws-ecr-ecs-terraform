@@ -7,3 +7,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - 23456:23456
+  db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "terraform"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/initdb:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql-data:
+    driver: local
