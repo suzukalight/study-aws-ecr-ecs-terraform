@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 
+require('dotenv').config();
+
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { sequelize } from './models';

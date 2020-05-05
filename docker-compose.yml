@@ -12,8 +12,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: "terraform"
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=terraform
+      - MYSQL_USER=terraform
+      - MYSQL_PASSWORD=password
     volumes:
       - mysql-data:/var/lib/mysql
       - ./mysql/initdb:/docker-entrypoint-initdb.d
