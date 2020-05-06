@@ -1,4 +1,4 @@
-import { sequelize } from '../infrastructure/sequelize';
+import { sequelize } from '../../infrastructure/sequelize';
 import User from './user';
 import Message from './message';
 

@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-import { sequelize } from '../infrastructure/sequelize';
+import { sequelize } from '../../infrastructure/sequelize';
 
 class Message extends Model {
   public id!: number;
@@ -20,7 +20,11 @@ Message.init(
     },
     text: {
       type: DataTypes.STRING(65500),
-      allowNull: true,
+      validate: {
+        notEmpty: {
+          msg: 'A message has to have a text.',
+        },
+      },
     },
   },
   {
