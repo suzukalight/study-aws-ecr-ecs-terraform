@@ -1,4 +1,7 @@
 import { Sequelize, Config, Options } from 'sequelize';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 type ConfigMap = {
   [key: string]: Options;
