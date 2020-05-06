@@ -24,6 +24,10 @@
         "valueFrom": "/sample/DB_HOSTNAME"
       },
       {
+        "name": "DB_DATABASE",
+        "valueFrom": "/sample/DB_DATABASE"
+      },
+      {
         "name": "DB_USERNAME",
         "valueFrom": "/sample/DB_USERNAME"
       },
