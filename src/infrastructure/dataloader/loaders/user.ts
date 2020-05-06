@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 
 import { Models } from '../../../domain/models';
 
-export const batchUsers = async (keys: readonly number[], models: Models) => {
+export const batchUsers = async (keys: number[], models: Models) => {
   const users = await models.User.findAll({
     where: { id: { [Op.in]: keys } },
   });
