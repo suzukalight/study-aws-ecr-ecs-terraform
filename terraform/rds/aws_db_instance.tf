@@ -37,3 +37,5 @@ resource "aws_db_instance" "sample" {
     ignore_changes = [password]
   }
 }
+
+# $ aws rds modify-db-instance --db-instance-identifier 'sample' --master-user-password 'NewMasterPassword'

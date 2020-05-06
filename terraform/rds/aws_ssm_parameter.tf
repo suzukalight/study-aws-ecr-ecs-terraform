@@ -1,6 +1,6 @@
 resource "aws_ssm_parameter" "db_username" {
   name        = "/sample/DB_USERNAME"
-  value       = "terraform"
+  value       = "admin"
   type        = "String"
   description = "DB USERNAME"
 }
