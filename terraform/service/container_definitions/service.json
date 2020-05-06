@@ -34,6 +34,18 @@
       {
         "name": "DB_PASSWORD",
         "valueFrom": "/sample/DB_PASSWORD"
+      },
+      {
+        "name": "JWT_SECRET",
+        "valueFrom": "/sample/JWT_SECRET"
+      },
+      {
+        "name": "JWT_EXPIRES_IN",
+        "valueFrom": "/sample/JWT_EXPIRES_IN"
+      },
+      {
+        "name": "SERVER_PORT",
+        "valueFrom": "/sample/SERVER_PORT"
       }
     ]
   }
