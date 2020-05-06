@@ -4,3 +4,8 @@ resource "aws_kms_key" "sample" {
   is_enabled              = true
   deletion_window_in_days = 30
 }
+
+resource "aws_kms_alias" "sample" {
+  name          = "alias/sample"
+  target_key_id = aws_kms_key.sample.id
+}

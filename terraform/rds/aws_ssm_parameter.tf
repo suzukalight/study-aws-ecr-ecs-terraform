@@ -1,12 +1,12 @@
 resource "aws_ssm_parameter" "db_username" {
-  name        = "DB_USERNAME"
+  name        = "/sample/DB_USERNAME"
   value       = "terraform"
   type        = "String"
   description = "DB USERNAME"
 }
 
 resource "aws_ssm_parameter" "db_raw_password" {
-  name        = "DB_PASSWORD"
+  name        = "/sample/DB_PASSWORD"
   value       = "uninitialized"
   type        = "SecureString"
   description = "DB PASSWORD"
@@ -17,7 +17,7 @@ resource "aws_ssm_parameter" "db_raw_password" {
 }
 
 resource "aws_ssm_parameter" "db_hostname" {
-  name        = "DB_HOSTNAME"
+  name        = "/sample/DB_HOSTNAME"
   value       = aws_db_instance.sample.address
   type        = "String"
   description = "DB HOSTNAME"
@@ -25,5 +25,5 @@ resource "aws_ssm_parameter" "db_hostname" {
 
 # Please overwrite the password manually with the following command;
 # ---
-# $ aws ssm put-parameter --name 'DB_PASSWORD' --type SecureString --value 'ModifiedStrongPassword!' --overwrite
+# $ aws ssm put-parameter --name '/sample/DB_PASSWORD' --type SecureString --value 'ModifiedStrongPassword!' --overwrite
 # ---

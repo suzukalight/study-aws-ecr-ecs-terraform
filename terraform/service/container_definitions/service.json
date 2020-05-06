@@ -21,15 +21,15 @@
     "secrets": [
       {
         "name": "DB_HOSTNAME",
-        "valueFrom": "DB_HOSTNAME"
+        "valueFrom": "/sample/DB_HOSTNAME"
       },
       {
         "name": "DB_USERNAME",
-        "valueFrom": "DB_USERNAME"
+        "valueFrom": "/sample/DB_USERNAME"
       },
       {
         "name": "DB_PASSWORD",
-        "valueFrom": "DB_PASSWORD"
+        "valueFrom": "/sample/DB_PASSWORD"
       }
     ]
   }
