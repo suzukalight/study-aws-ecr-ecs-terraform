@@ -1,5 +1,5 @@
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.lb.arn
+  load_balancer_arn = aws_lb.sample.arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -10,7 +10,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.lb.arn
+  load_balancer_arn = aws_lb.sample.arn
   port              = "443"
   protocol          = "HTTPS"
   certificate_arn   = aws_acm_certificate.mokmok.arn
@@ -23,7 +23,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "redirect_http_to_https" {
-  load_balancer_arn = aws_lb.lb.arn
+  load_balancer_arn = aws_lb.sample.arn
   port              = "8080"
   protocol          = "HTTP"
 

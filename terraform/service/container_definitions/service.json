@@ -2,8 +2,6 @@
   {
     "name": "sample-webapp",
     "image": "747695887408.dkr.ecr.ap-northeast-1.amazonaws.com/sample-image:latest",
-    "cpu": 256,
-    "memoryReservation": 512,
     "essential": true,
     "portMappings": [
       {
@@ -15,19 +13,19 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "sample-service",
         "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "service"
+        "awslogs-stream-prefix": "service",
+        "awslogs-group": "sample-service"
       }
     },
     "secrets": [
       {
-        "name": "DB_HOST",
-        "valueFrom": "DB_HOST"
+        "name": "DB_HOSTNAME",
+        "valueFrom": "DB_HOSTNAME"
       },
       {
-        "name": "DB_USER",
-        "valueFrom": "DB_USER"
+        "name": "DB_USERNAME",
+        "valueFrom": "DB_USERNAME"
       },
       {
         "name": "DB_PASSWORD",
