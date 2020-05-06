@@ -23,7 +23,7 @@ resource "aws_ssm_parameter" "db_hostname" {
   description = "DB HOSTNAME"
 }
 
-#
 # Please overwrite the password manually with the following command;
-#
+# ---
 # $ aws ssm put-parameter --name 'DB_PASSWORD' --type SecureString --value 'ModifiedStrongPassword!' --overwrite
+# ---
