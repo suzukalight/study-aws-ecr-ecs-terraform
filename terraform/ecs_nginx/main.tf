@@ -17,7 +17,7 @@ locals {
 # ECS Task definitions
 
 data "template_file" "container_definitions" {
-  template = file("./container_definitions.json")
+  template = file("./ecs_nginx/container_definitions.json")
 }
 
 resource "aws_ecs_task_definition" "this" {
