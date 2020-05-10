@@ -1,18 +1,17 @@
 import express, { Request } from 'express';
 import cors from 'cors';
 import { ApolloServer, AuthenticationError } from 'apollo-server-express';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import http from 'http';
 import DataLoader from 'dataloader';
+
+require('dotenv').config();
 
 import schema from './application/schema';
 import resolvers from './application/resolvers';
 import models, { sequelize } from './domain/models';
 import User from './domain/models/user';
 import loaders from './infrastructure/dataloader/loaders';
-
-dotenv.config();
 
 const app = express();
 
