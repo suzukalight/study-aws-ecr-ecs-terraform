@@ -20,8 +20,8 @@
     },
     "secrets": [
       {
-        "name": "DB_HOSTNAME",
-        "valueFrom": "/sample/DB_HOSTNAME"
+        "name": "DB_HOST",
+        "valueFrom": "/sample/DB_HOST"
       },
       {
         "name": "DB_DATABASE",

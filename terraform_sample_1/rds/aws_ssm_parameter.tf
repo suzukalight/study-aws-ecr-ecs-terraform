@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "db_hostname" {
-  name        = "/sample/DB_HOSTNAME"
+  name        = "/sample/DB_HOST"
   value       = aws_db_instance.sample.address
   type        = "String"
   description = "DB host name"
