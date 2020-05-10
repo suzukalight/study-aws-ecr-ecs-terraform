@@ -42,7 +42,7 @@ resource "aws_lb_target_group" "this" {
   target_type = "ip"
   protocol    = "HTTP"
 
-  health_check = {
+  health_check {
     port = 80
   }
 }
@@ -56,8 +56,9 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["*"]
+    path_pattern {
+      values = ["*"]
+    }
   }
 }
 
@@ -103,16 +104,14 @@ resource "aws_ecs_service" "this" {
 
   task_definition = aws_ecs_task_definition.this.arn
 
-  network_configuration = {
-    subnets         = [var.subnet_ids]
+  network_configuration {
+    subnets         = var.subnet_ids
     security_groups = [aws_security_group.this.id]
   }
 
-  load_balancer = [
-    {
-      target_group_arn = aws_lb_target_group.this.arn
-      container_name   = "nginx"
-      container_port   = "80"
-    }
-  ]
+  load_balancer {
+    target_group_arn = aws_lb_target_group.this.arn
+    container_name   = "nginx"
+    container_port   = "80"
+  }
 }

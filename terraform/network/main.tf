@@ -30,7 +30,7 @@ resource "aws_vpc" "this" {
 # Public Subnet
 
 resource "aws_subnet" "publics" {
-  count = var.public_subnet_cidrs
+  count = length(var.public_subnet_cidrs)
 
   vpc_id = aws_vpc.this.id
 
@@ -51,7 +51,7 @@ resource "aws_internet_gateway" "this" {
 }
 
 resource "aws_eip" "nat" {
-  count = var.public_subnet_cidrs
+  count = length(var.public_subnet_cidrs)
 
   vpc = true
 
@@ -61,7 +61,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "this" {
-  count = var.public_subnet_cidrs
+  count = length(var.public_subnet_cidrs)
 
   subnet_id     = element(aws_subnet.publics.*.id, count.index)
   allocation_id = element(aws_eip.nat.*.id, count.index)
@@ -86,7 +86,7 @@ resource "aws_route" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  count = var.public_subnet_cidrs
+  count = length(var.public_subnet_cidrs)
 
   subnet_id      = element(aws_subnet.publics.*.id, count.index)
   route_table_id = aws_route_table.public.id
@@ -95,7 +95,7 @@ resource "aws_route_table_association" "public" {
 # Private Subnet
 
 resource "aws_subnet" "privates" {
-  count = var.private_subnet_cidrs
+  count = length(var.private_subnet_cidrs)
 
   vpc_id = aws_vpc.this.id
 
@@ -108,7 +108,7 @@ resource "aws_subnet" "privates" {
 }
 
 resource "aws_route_table" "privates" {
-  count = var.private_subnet_cidrs
+  count = length(var.private_subnet_cidrs)
 
   vpc_id = aws_vpc.this.id
 
@@ -118,7 +118,7 @@ resource "aws_route_table" "privates" {
 }
 
 resource "aws_route" "privates" {
-  count = var.private_subnet_cidrs
+  count = length(var.private_subnet_cidrs)
 
   destination_cidr_block = "0.0.0.0/0"
 
@@ -127,7 +127,7 @@ resource "aws_route" "privates" {
 }
 
 resource "aws_route_table_association" "privates" {
-  count = var.private_subnet_cidrs
+  count = length(var.private_subnet_cidrs)
 
   subnet_id      = element(aws_subnet.privates.*.id, count.index)
   route_table_id = element(aws_route_table.privates.*.id, count.index)
@@ -140,9 +140,9 @@ output "vpc_id" {
 }
 
 output "public_subnet_ids" {
-  value = ["${aws_subnet.publics.*.id}"]
+  value = aws_subnet.publics.*.id
 }
 
 output "private_subnet_ids" {
-  value = ["${aws_subnet.privates.*.id}"]
+  value = aws_subnet.privates.*.id
 }

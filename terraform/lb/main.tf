@@ -56,8 +56,8 @@ resource "aws_lb" "this" {
   load_balancer_type = "application"
   name               = var.name
 
-  security_groups = ["${aws_security_group.this.id}"]
-  subnets         = ["${var.public_subnet_ids}"]
+  security_groups = [aws_security_group.this.id]
+  subnets         = var.public_subnet_ids
 }
 
 resource "aws_lb_listener" "http" {
@@ -109,7 +109,7 @@ resource "aws_route53_record" "this" {
   name    = var.domain
   zone_id = data.aws_route53_zone.this.id
 
-  alias = {
+  alias {
     name                   = aws_lb.this.dns_name
     zone_id                = aws_lb.this.zone_id
     evaluate_target_health = true
