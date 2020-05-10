@@ -75,13 +75,44 @@ module "ecs_cluster" {
   name = var.name
 }
 
-module "nginx" {
-  source = "./nginx"
+# module "nginx" {
+#   source = "./nginx"
 
-  name = var.name
+#   name = var.name
 
+#   cluster_name       = module.ecs_cluster.cluster_name
+#   vpc_id             = module.network.vpc_id
+#   subnet_ids         = module.network.private_subnet_ids
+#   https_listener_arn = module.lb.https_listener_arn
+# }
+
+module "rds" {
+  source = "./rds"
+
+  name       = var.name
+  vpc_id     = module.network.vpc_id
+  subnet_ids = module.network.private_subnet_ids
+
+  database_name   = "terraform"
+  master_username = "terraform"
+  master_password = "password"
+}
+
+module "ecs_app" {
+  source = "./ecs_app"
+
+  name               = var.name
   cluster_name       = module.ecs_cluster.cluster_name
   vpc_id             = module.network.vpc_id
   subnet_ids         = module.network.private_subnet_ids
   https_listener_arn = module.lb.https_listener_arn
+
+  app_host       = var.domain
+  db_host        = module.rds.endpoint
+  db_database    = "terraform"
+  db_username    = "terraform"
+  db_password    = "password"
+  server_port    = 23456
+  jwt_secret     = "your_jwt_secret_phrase"
+  jwt_expires_in = "30m"
 }
