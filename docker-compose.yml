@@ -33,7 +33,7 @@ services:
     networks:
       internal:
         aliases:
-          - backend.local
+          - backend.mokmok.local
     volumes:
       - backend-data:/usr/src/backend # named volume
       - /usr/src/backend/node_modules # anonymous volume for node_modules only
