@@ -28,6 +28,31 @@ locals {
   region = data.aws_region.current.name
 }
 
+resource "aws_service_discovery_private_dns_namespace" "this" {
+  name        = "mokmok.local"
+  description = "mokmok internal"
+  vpc         = var.vpc_id
+}
+
+resource "aws_service_discovery_service" "this" {
+  name = "backend"
+
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.this.id
+
+    dns_records {
+      ttl  = 10
+      type = "A"
+    }
+
+    routing_policy = "MULTIVALUE"
+  }
+
+  health_check_custom_config {
+    failure_threshold = 1
+  }
+}
+
 resource "aws_lb_target_group" "this" {
   name = local.name
 
@@ -192,5 +217,9 @@ resource "aws_ecs_service" "this" {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = "nginx"
     container_port   = "80"
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.this.arn
   }
 }
