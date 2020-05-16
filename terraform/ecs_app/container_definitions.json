@@ -11,6 +11,12 @@
         "protocol": "tcp"
       }
     ],
+    "dependsOn": [
+      {
+        "containerName": "app",
+        "condition": "START"
+      }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -18,19 +24,18 @@
         "awslogs-group": "/${name}/ecs",
         "awslogs-stream-prefix": "nginx"
       }
-    },
-    "environment": [
-      {
-        "name": "APP_HOST",
-        "value": "${app_host}"
-      }
-    ]
+    }
   },
   {
     "name": "app",
     "image": "${account_id}.dkr.ecr.${region}.amazonaws.com/app:${tag}",
     "cpu": 256,
     "memory": 512,
+    "portMappings": [
+      {
+        "containerPort": 23456
+      }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -40,10 +45,6 @@
       }
     },
     "environment": [
-      {
-        "name": "APP_HOST",
-        "value": "${app_host}"
-      },
       {
         "name": "DB_HOST",
         "value": "${db_host}"

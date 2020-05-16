@@ -1,6 +1,6 @@
 FROM node:12
 
-WORKDIR /app
+WORKDIR /backend
 COPY package.json .
 RUN yarn
 COPY . .
