@@ -16,7 +16,7 @@ resource "aws_acm_certificate" "this" {
   validation_method = "DNS"
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }
 
@@ -41,5 +41,5 @@ resource "aws_acm_certificate_validation" "this" {
 # outputs
 
 output "acm_id" {
-  value = "${aws_acm_certificate.this.id}"
+  value = aws_acm_certificate.this.id
 }

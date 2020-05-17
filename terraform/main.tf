@@ -52,12 +52,12 @@ module "network" {
   azs  = var.azs
 }
 
-module "acm" {
-  source = "./acm"
+# module "acm" {
+#   source = "./acm"
 
-  name   = var.name
-  domain = var.domain
-}
+#   name   = var.name
+#   domain = var.domain
+# }
 
 module "lb" {
   source = "./lb"
@@ -66,7 +66,7 @@ module "lb" {
   vpc_id            = module.network.vpc_id
   public_subnet_ids = module.network.public_subnet_ids
   domain            = var.domain
-  acm_id            = module.acm.acm_id
+  # acm_id            = module.acm.acm_id
 }
 
 module "ecs_cluster" {
@@ -74,17 +74,6 @@ module "ecs_cluster" {
 
   name = var.name
 }
-
-# module "nginx" {
-#   source = "./nginx"
-
-#   name = var.name
-
-#   cluster_name       = module.ecs_cluster.cluster_name
-#   vpc_id             = module.network.vpc_id
-#   subnet_ids         = module.network.private_subnet_ids
-#   https_listener_arn = module.lb.https_listener_arn
-# }
 
 module "rds" {
   source = "./rds"
@@ -105,7 +94,8 @@ module "ecs_app" {
   cluster_name       = module.ecs_cluster.cluster_name
   vpc_id             = module.network.vpc_id
   subnet_ids         = module.network.private_subnet_ids
-  https_listener_arn = module.lb.https_listener_arn
+  # https_listener_arn = module.lb.https_listener_arn
+  http_listener_arn = module.lb.http_listener_arn
 
   app_host       = var.domain
   db_host        = module.rds.endpoint

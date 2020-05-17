@@ -6,7 +6,7 @@ variable "public_subnet_ids" {
   type = list(string)
 }
 variable "domain" {}
-variable "acm_id" {}
+# variable "acm_id" {}
 
 # ALB
 
@@ -77,29 +77,29 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-resource "aws_lb_listener" "https" {
-  port     = "443"
-  protocol = "HTTPS"
+# resource "aws_lb_listener" "https" {
+#   port     = "443"
+#   protocol = "HTTPS"
 
-  certificate_arn = var.acm_id
+#   certificate_arn = var.acm_id
 
-  load_balancer_arn = aws_lb.this.arn
+#   load_balancer_arn = aws_lb.this.arn
 
-  default_action {
-    type = "fixed-response"
+#   default_action {
+#     type = "fixed-response"
 
-    fixed_response {
-      content_type = "text/plain"
-      status_code  = "200"
-      message_body = "ok"
-    }
-  }
-}
+#     fixed_response {
+#       content_type = "text/plain"
+#       status_code  = "200"
+#       message_body = "ok"
+#     }
+#   }
+# }
 
 # Route53
 
 data "aws_route53_zone" "this" {
-  name         = "${var.domain}"
+  name         = var.domain
   private_zone = false
 }
 
@@ -118,6 +118,10 @@ resource "aws_route53_record" "this" {
 
 # outputs
 
-output "https_listener_arn" {
-  value = aws_lb_listener.https.arn
+output "http_listener_arn" {
+  value = aws_lb_listener.http.arn
 }
+
+# output "https_listener_arn" {
+#   value = aws_lb_listener.https.arn
+# }

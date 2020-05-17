@@ -1,6 +1,7 @@
 variable "name" {}
 variable "vpc_id" {}
-variable "https_listener_arn" {}
+# variable "https_listener_arn" {}
+variable "http_listener_arn" {}
 variable "cluster_name" {}
 variable "subnet_ids" {
   type = list(string)
@@ -157,7 +158,8 @@ resource "aws_iam_role_policy_attachment" "task_execution" {
 }
 
 resource "aws_lb_listener_rule" "this" {
-  listener_arn = var.https_listener_arn
+  # listener_arn = var.https_listener_arn
+  listener_arn = var.http_listener_arn
 
   action {
     type             = "forward"
@@ -221,5 +223,9 @@ resource "aws_ecs_service" "this" {
 
   service_registries {
     registry_arn = aws_service_discovery_service.this.arn
+  }
+
+  lifecycle {
+    ignore_changes = [desire_count]
   }
 }
