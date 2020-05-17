@@ -30,7 +30,7 @@ provider "template" {
 # --------------------
 
 variable "name" {
-  default = "sample2"
+  default = "sample-ecs"
 }
 
 variable "azs" {
@@ -46,21 +46,21 @@ variable "domain" {
 # --------------------
 
 module "network" {
-  source = "./network"
+  source = "../../modules/network"
 
   name = var.name
   azs  = var.azs
 }
 
 # module "acm" {
-#   source = "./acm"
+#   source = "../../modules/acm"
 
 #   name   = var.name
 #   domain = var.domain
 # }
 
 module "lb" {
-  source = "./lb"
+  source = "../../modules/lb"
 
   name              = var.name
   vpc_id            = module.network.vpc_id
@@ -70,13 +70,13 @@ module "lb" {
 }
 
 module "ecs_cluster" {
-  source = "./ecs_cluster"
+  source = "../../modules/ecs_cluster"
 
   name = var.name
 }
 
 module "rds" {
-  source = "./rds"
+  source = "../../modules/rds"
 
   name       = var.name
   vpc_id     = module.network.vpc_id
@@ -88,7 +88,7 @@ module "rds" {
 }
 
 module "ecs_app" {
-  source = "./ecs_app"
+  source = "../../modules/ecs_app"
 
   name               = var.name
   cluster_name       = module.ecs_cluster.cluster_name

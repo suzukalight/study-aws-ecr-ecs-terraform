@@ -69,7 +69,7 @@ resource "aws_lb_target_group" "this" {
 }
 
 data "template_file" "container_definitions" {
-  template = file("./ecs_app/container_definitions.json")
+  template = file("${path.module}/container_definitions.json")
 
   vars = {
     tag = "latest"
@@ -167,8 +167,9 @@ resource "aws_lb_listener_rule" "this" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["*"]
+    path_pattern {
+      values = ["*"]
+    }
   }
 }
 
@@ -226,6 +227,6 @@ resource "aws_ecs_service" "this" {
   }
 
   lifecycle {
-    ignore_changes = [desire_count]
+    ignore_changes = [desired_count]
   }
 }
