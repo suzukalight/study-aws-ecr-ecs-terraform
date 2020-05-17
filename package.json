@@ -51,6 +51,7 @@
     "sequelize-cli": "npx sequelize-cli",
     "db:migrate": "npx sequelize-cli db:migrate",
     "db:seed:all": "npx sequelize-cli db:seed:all",
-    "start": "yarn db:migrate && yarn start-server"
+    "start": "yarn db:migrate && yarn start-server",
+    "iac:push-image": "./terraform/docker-push.sh 747695887408 sample suzukalight"
   }
 }
