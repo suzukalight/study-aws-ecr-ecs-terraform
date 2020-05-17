@@ -4,7 +4,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: docker/nginx/Dockerfile
+      dockerfile: ./docker/nginx/Dockerfile
     ports:
       - 80:80
     depends_on:
@@ -17,11 +17,10 @@ services:
   backend:
     build:
       context: .
-      dockerfile: docker/backend/Dockerfile
-    hostname: backend
+      dockerfile: ./docker/backend/Dockerfile
     env_file: .env
     environment:
-      DB_HOST: db
+      DB_HOST: db.mokmok.local
       JWT_SECRET: your_jwt_secret_phrase
       JWT_EXPIRES_IN: 30m
     ports:
