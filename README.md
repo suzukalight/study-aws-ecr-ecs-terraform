@@ -24,26 +24,26 @@ Terraform(AWS/Fargate) + Nodejs(GraphQL) + MySQL sample
 docker-compose up
 ```
 
-## Deploy
+## Deployment
+
+### Setup ECR
+
+```
+cd terraform/roots/permanent
+terraform init
+terraform apply
+```
 
 ### Upload docker image to ECR
 
 ```
-aws ecr get-login-password --region ap-northeast-1 --profile suzukalight | docker login --username AWS --password-stdin 747695887408.dkr.ecr.ap-northeast-1.amazonaws.com
-
-export ECR_URI_NGINX=$(aws ecr describe-repositories --repository-names nginx --query 'repositories[0].repositoryUri' --output text)
-APP_HOST=mokmok.cloud docker build -t ${ECR_URI_NGINX} -f docker/nginx/Dockerfile .
-docker push ${ECR_URI_NGINX}
-
-export ECR_URI_APP=$(aws ecr describe-repositories --repository-names app --query 'repositories[0].repositoryUri' --output text)
-docker build -t ${ECR_URI_APP} -f docker/app/Dockerfile .
-docker push ${ECR_URI_APP}
+$ yarn iac:push-image
 ```
 
-### Deploying
+### Setup servers for development
 
 ```
-cd terraform
+cd terraform/roots/dev
 terraform init
 terraform apply
 ```

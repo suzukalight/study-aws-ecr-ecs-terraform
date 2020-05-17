@@ -1,7 +1,7 @@
 [
   {
     "name": "nginx",
-    "image": "${account_id}.dkr.ecr.${region}.amazonaws.com/nginx:${tag}",
+    "image": "${account_id}.dkr.ecr.${region}.amazonaws.com/${project_name}-nginx:${tag}",
     "cpu": 256,
     "memory": 512,
     "essential": true,
@@ -14,7 +14,7 @@
     ],
     "dependsOn": [
       {
-        "containerName": "app",
+        "containerName": "backend",
         "condition": "START"
       }
     ],
@@ -28,8 +28,8 @@
     }
   },
   {
-    "name": "app",
-    "image": "${account_id}.dkr.ecr.${region}.amazonaws.com/app:${tag}",
+    "name": "backend",
+    "image": "${account_id}.dkr.ecr.${region}.amazonaws.com/${project_name}-backend:${tag}",
     "cpu": 256,
     "memory": 512,
     "essential": true,
@@ -43,7 +43,7 @@
       "options": {
         "awslogs-region": "${region}",
         "awslogs-group": "/${name}/ecs",
-        "awslogs-stream-prefix": "app"
+        "awslogs-stream-prefix": "backend"
       }
     },
     "environment": [

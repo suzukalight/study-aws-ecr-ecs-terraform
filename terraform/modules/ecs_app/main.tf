@@ -74,7 +74,8 @@ data "template_file" "container_definitions" {
   vars = {
     tag = "latest"
 
-    name = local.name
+    name         = local.name
+    project_name = var.name
 
     account_id = local.account_id
     region     = local.region

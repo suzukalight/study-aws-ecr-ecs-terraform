@@ -30,7 +30,7 @@ provider "template" {
 # --------------------
 
 variable "name" {
-  default = "sample-ecs"
+  default = "sample"
 }
 
 variable "azs" {
