@@ -6,9 +6,10 @@ terraform {
   required_version = "0.12.24"
 
   backend "s3" {
-    bucket = "study-aws-ecr-ecs-terraform-suzukalight"
-    key    = "sample2/terraform.tfstate"
-    region = "ap-northeast-1"
+    bucket  = "study-aws-ecr-ecs-terraform-suzukalight"
+    key     = "sample/roots/dev/terraform.tfstate"
+    region  = "ap-northeast-1"
+    encrypt = true
   }
 }
 
@@ -39,6 +40,21 @@ variable "azs" {
 
 variable "domain" {
   default = "mokmok.cloud"
+}
+
+locals {
+  db_database    = "terraform"
+  db_username    = "terraform"
+  server_port    = 23456
+  jwt_expires_in = "30m"
+}
+
+data "aws_ssm_parameter" "db_password" {
+  name = "/${var.name}/DB_PASSWORD"
+}
+
+data "aws_ssm_parameter" "jwt_secret" {
+  name = "/${var.name}/JWT_SECRET"
 }
 
 # --------------------
@@ -82,27 +98,26 @@ module "rds" {
   vpc_id     = module.network.vpc_id
   subnet_ids = module.network.private_subnet_ids
 
-  database_name   = "terraform"
-  master_username = "terraform"
-  master_password = "password"
+  database_name   = local.db_database
+  master_username = local.db_username
+  master_password = data.aws_ssm_parameter.db_password.value
 }
 
 module "ecs_app" {
   source = "../../modules/ecs_app"
 
-  name               = var.name
-  cluster_name       = module.ecs_cluster.cluster_name
-  vpc_id             = module.network.vpc_id
-  subnet_ids         = module.network.private_subnet_ids
+  name         = var.name
+  cluster_name = module.ecs_cluster.cluster_name
+  vpc_id       = module.network.vpc_id
+  subnet_ids   = module.network.private_subnet_ids
   # https_listener_arn = module.lb.https_listener_arn
   http_listener_arn = module.lb.http_listener_arn
 
-  app_host       = var.domain
   db_host        = module.rds.endpoint
-  db_database    = "terraform"
-  db_username    = "terraform"
-  db_password    = "password"
-  server_port    = 23456
-  jwt_secret     = "your_jwt_secret_phrase"
-  jwt_expires_in = "30m"
+  db_database    = local.db_database
+  db_username    = local.db_username
+  db_password    = data.aws_ssm_parameter.db_password.value
+  server_port    = local.server_port
+  jwt_secret     = data.aws_ssm_parameter.jwt_secret.value
+  jwt_expires_in = local.jwt_expires_in
 }
