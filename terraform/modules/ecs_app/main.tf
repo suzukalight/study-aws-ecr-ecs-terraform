@@ -6,7 +6,6 @@ variable "cluster_name" {}
 variable "subnet_ids" {
   type = list(string)
 }
-variable "app_host" {}
 variable "db_host" {}
 variable "db_database" {}
 variable "db_username" {}
@@ -80,7 +79,6 @@ data "template_file" "container_definitions" {
     account_id = local.account_id
     region     = local.region
 
-    app_host       = var.app_host
     db_host        = var.db_host
     db_username    = var.db_username
     db_password    = var.db_password

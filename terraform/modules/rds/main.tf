@@ -67,6 +67,10 @@ resource "aws_rds_cluster" "this" {
 
   final_snapshot_identifier = local.name
   skip_final_snapshot       = true
+
+  lifecycle {
+    ignore_changes = [master_password]
+  }
 }
 
 resource "aws_rds_cluster_instance" "this" {
